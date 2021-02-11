@@ -1,10 +1,16 @@
-#--Backend Configuration
+#--Terraform Configuration
 terraform {
     backend "s3" {
         bucket          = "tinfoil-terraform-backend"
         key             = "ec2_build.tfstate"
         region          = "eu-west-2"
         dynamodb_table  = "tinfoil_tf_state_locking"
+    }
+    required_providers {
+        mycloud = {
+            source  = "hashicorp/aws"
+            version = "= 3.27"
+        }
     }
 }
 
@@ -21,6 +27,3 @@ data "aws_ami" "tinfoil_ubuntu" {
     }
     owners = ["099720109477"] # Canonical
 }
-
-#--Provider
-provider "aws" {}
